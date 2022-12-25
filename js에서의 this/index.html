@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js에서 this란??</title>
+  </head>
+  <body>
+    <button type="button" class="btn">this는 누굴까??</button>
+    <script>
+      const car = {
+        name: "TESLA",
+        getName: function () {
+          //   1_1. car 라는 객체안에서 호출 되었기 때문에 this는 해당 객체 자체를 가리킨다.
+          console.log("car :", this);
+        },
+      };
+      car.getName();
+
+      //   1_2. 그런데 car 객체 밖에서 car 내부의 함수를 호출하면??
+      const globalCar = car.getName;
+      //   1_3. car 밖에서 호출 되었기 때문에 window객체에서 호출된 것으로 간주하여 this는 window를 가르키게 된다.
+      globalCar();
+
+      //   1_4. 그래서 this의 값을 고정하고 싶다면 이렇게 bind 함수로 this가 가르키는 대상을 고정해야 된다.
+      const globalCarBind = globalCar.bind(car);
+      globalCarBind();
+
+      const car2 = {
+        name: "IONIQ5",
+        // 2_1. 다른 객체 내부에서 호출한다면??
+        getName: car.getName,
+      };
+      //   2_2. this는 해당 객체를 가르키게 되니 결과 값은 name: "IONIQ5",이 나온다.
+      car2.getName();
+
+      //   3_1. DOM에서 함수를 호출할 경우는 DOM으로 부터 호출되었기 때문에 this는 해당 DOM을 가르킨다.
+      document.querySelector(".btn").addEventListener("click", car.getName);
+
+      const testCar = {
+        name: "benz",
+        getName: function () {
+          // 4_1. 1_1과 동일하게 this는 testCar 객체를 가르키지만,
+          console.log("testCar :", this);
+          //   4_2. 객체 안에 함수가 있더라도 a.b() 형태가 아닌 b()와 같은 함수 단독으로 호출 되는 경우에는 this는 window가 된다.
+          const innerFunc = function () {
+            console.log("innerFunc :", this);
+          };
+          innerFunc();
+          //   4_3. 1_4처럼 bind로도 해결 가능하지만,
+          const innerFuncBind = innerFunc.bind(testCar);
+          innerFuncBind();
+
+          //   4_4. 화살표 함수를 사용하면 훨씬 깔끔하게 해결 할 수 있따.
+          //   화살표 함수에서의 this는 함수가 속해있는 곳의 상위 this를 상속 받는다.
+          //   참고로 화살표 함수에선 bind 함수를 제공하지 않는다. 즉 화살표와 bind를 동시에 사용할 수 없다.
+          const innerFunc2 = () => {
+            console.log("innerFunc2 :", this);
+          };
+          innerFunc2();
+        },
+      };
+      testCar.getName();
+
+      //   그럼 this를 쓰고 싶을 때 무슨 함수를 써야 돼?
+      //   this를 쓰고 싶다면 일반 함수를 써라. .bind()원하는 객체를 지정할 수 있다.
+      //   함수 안에 함수에 있는 경우 상위의 this를 가져오려면 화살표 함수를 사용해라.
+
+      //   두 줄 요약 :
+      //   this는 함수가 호출될 때 결정된다.
+      //   화살표 함수에서 this는 함수가 속해 있는 곳의 상위 this를 상속 받는다.
+
+      const ageTest = {
+        unit: "세",
+        ageList: [10, 20, 30, 40],
+        getAgeList: function () {
+          const result = this.ageList.map((age) => {
+            return age + this.unit;
+          });
+          console.log("result :", result);
+        },
+      };
+      ageTest.getAgeList();
+    </script>
+  </body>
+</html>
