@@ -6,7 +6,11 @@ const props = defineProps({
     type: Object,
   },
 });
+
+const dataArray = props.profileData;
+dataArray.sort(() => Math.random() - 0.5);
 </script>
+
 <template>
   <div class="profileList">
     <profileCard
@@ -16,6 +20,7 @@ const props = defineProps({
     />
   </div>
 </template>
+
 <style lang="scss" scoped>
 .profile {
   &List {
