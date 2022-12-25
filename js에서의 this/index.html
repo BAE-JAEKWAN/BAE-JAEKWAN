@@ -44,9 +44,9 @@
           // 4_1. 1_1과 동일하게 this는 testCar 객체를 가르키지만,
           console.log("testCar :", this);
           //   4_2. 객체 안에 함수가 있더라도 a.b() 형태가 아닌 b()와 같은 함수 단독으로 호출 되는 경우에는 this는 window가 된다.
-          const innerFunc = function () {
+          function innerFunc() {
             console.log("innerFunc :", this);
-          };
+          }
           innerFunc();
           //   4_3. 1_4처럼 bind로도 해결 가능하지만,
           const innerFuncBind = innerFunc.bind(testCar);
@@ -55,7 +55,7 @@
           //   4_4. 화살표 함수를 사용하면 훨씬 깔끔하게 해결 할 수 있따.
           //   화살표 함수에서의 this는 함수가 속해있는 곳의 상위 this를 상속 받는다.
           //   참고로 화살표 함수에선 bind 함수를 제공하지 않는다. 즉 화살표와 bind를 동시에 사용할 수 없다.
-          const innerFunc2 = () => {
+          innerFunc2 = () => {
             console.log("innerFunc2 :", this);
           };
           innerFunc2();
@@ -64,8 +64,8 @@
       testCar.getName();
 
       //   그럼 this를 쓰고 싶을 때 무슨 함수를 써야 돼?
-      //   this를 쓰고 싶다면 일반 함수를 써라. .bind()원하는 객체를 지정할 수 있다.
-      //   함수 안에 함수에 있는 경우 상위의 this를 가져오려면 화살표 함수를 사용해라.
+      //   this를 쓰고 싶다면 일반 함수를 써라. .bind()로 원하는 객체를 지정할 수 있다.
+      //   함수 안에 함수가 있는 경우, 상위의 this를 가져오려면 화살표 함수를 사용해라.
 
       //   두 줄 요약 :
       //   this는 함수가 호출될 때 결정된다.
@@ -75,7 +75,7 @@
         unit: "세",
         ageList: [10, 20, 30, 40],
         getAgeList: function () {
-          const result = this.ageList.map((age) => {
+          const result = this.ageList.map(function (age) {
             return age + this.unit;
           });
           console.log("result :", result);
