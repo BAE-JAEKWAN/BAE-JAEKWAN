@@ -70,13 +70,14 @@ onMounted(() => {
           :type="props.data.btnType"
           class="formBtn"
           :class="props.data.btnIcon"
+          :disabled="state.validate === false"
         >
           <span class="blind">Confirm</span>
         </button>
       </div>
-      <mark class="formErrorMsg" v-if="state.validate === false"
-        >Please enter a valid {{ props.data.errorMsg }}!</mark
-      >
+      <mark class="formErrorMsg" v-if="state.validate === false">{{
+        props.data.errorMsg
+      }}</mark>
     </form>
   </div>
 </template>
@@ -110,6 +111,9 @@ onMounted(() => {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
+    &:disabled {
+      opacity: 0.2;
+    }
     &.icon {
       &Submit {
         background-image: url(@/assets/img/icon_plane.webp);

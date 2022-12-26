@@ -29,25 +29,70 @@ const state = reactive({
     id: "emailValidate",
     btnIcon: "iconSubmit",
     btnType: "submit",
-    errorMsg: "email",
+    errorMsg: "Please enter a valid email!",
   },
   formDataPass: {
-    label: "Subscribe to our newsletter",
+    label: "Validate Password",
     inputType: "password",
     id: "passwordValidate",
     btnIcon: "iconSubmit",
     btnType: "submit",
-    errorMsg: "password",
+    errorMsg: "Please enter a valid password!",
   },
   formDataNum: {
-    label: "Subscribe to our newsletter",
+    label: "Validate Number",
     inputType: "number",
     id: "numberValidate",
     btnIcon: "iconSubmit",
     btnType: "submit",
-    errorMsg: "number",
+    errorMsg: "Please enter a valid number!",
   },
 });
+
+// 만료 시간과 함께 데이터를 저장
+const setItemWithExpireTime = (keyName, keyValue, tts) => {
+  // localStorage에 저장할 객체
+  const obj = {
+    value: keyValue,
+    expire: Date.now() + tts,
+  };
+  // 객체를 JSON 문자열로 변환
+  const objString = JSON.stringify(obj);
+  // setItem
+  window.localStorage.setItem(keyName, objString);
+};
+
+function getItemWithExpireTime(keyName) {
+  // localStorage 값 읽기 (문자열)
+  const objString = window.localStorage.getItem(keyName);
+  // null 체크
+  if (!objString) {
+    return null;
+  }
+  // 문자열을 객체로 변환
+  const obj = JSON.parse(objString);
+  // 현재 시간과 localStorage의 expire 시간 비교
+  if (Date.now() > obj.expire) {
+    // 만료시간이 지난 item 삭제
+    window.localStorage.removeItem(keyName);
+    // null 리턴
+    return null;
+  }
+  // 만료기간이 남아있는 경우, value 값 리턴
+  return (state.bgImgNum = obj.value);
+}
+
+const randomNumber = (() => {
+  if (localStorage.getItem("sectionSubscribeBG")) {
+    getItemWithExpireTime("sectionSubscribeBG");
+  } else {
+    // 숫자 1~3까지 랜덤하게 지정
+    let val = Math.floor(Math.random() * 3) + 1;
+    // 만료시간 로컬스토리지 저장 시간으로부터 하루 뒤로 설정
+    setItemWithExpireTime("sectionSubscribeBG", val, "8.64e+7");
+    getItemWithExpireTime("sectionSubscribeBG");
+  }
+})();
 </script>
 
 <template>
@@ -56,7 +101,10 @@ const state = reactive({
     <profileList :profileData="state.profileData" />
   </section>
 
-  <section class="sectionSubscribe sectionWide">
+  <section
+    class="sectionSubscribe sectionWide"
+    :style="`background-image: url(../src/assets/img/bg_sectionSubscribe_${state.bgImgNum}.webp);`"
+  >
     <h2 class="subsTitle">Sed ut perspiciatis unde omnis</h2>
     <p class="subsParagraph01">
       There are many variations of passages of Lorem Ipsum available, but the
@@ -91,8 +139,8 @@ const state = reactive({
   &Subscribe {
     position: relative;
     text-align: center;
-    background: url(@/assets/img/bg_sectionSubscribe_01.webp) no-repeat center
-      top;
+    background-repeat: repeat-y;
+    background-position: center top;
     background-size: 100%;
     color: #fff;
     padding-top: 152px;
