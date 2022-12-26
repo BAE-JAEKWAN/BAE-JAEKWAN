@@ -1,18 +1,65 @@
 <script setup>
+import { onMounted, reactive } from "vue";
+
 const props = defineProps({
   data: {
     type: Object,
   },
 });
+const state = reactive({
+  id: `form_${props.data.id}`,
+  validate: null,
+});
+
+const validEmail = (obj) => {
+  if (validEmailCheck(obj) == false) {
+    obj.value = "";
+    obj.focus();
+    return (state.validate = false);
+  } else {
+    return (state.validate = true);
+  }
+};
+const validEmailCheck = (obj) => {
+  const pattern =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  return obj.value.match(pattern) != null;
+};
+
+onMounted(() => {
+  document.getElementById(state.id).addEventListener("change", (e) => {
+    const target = e.target;
+    if (target.type === "email") {
+      console.log("email");
+      validEmail(target);
+    } else if (target.type === "password") {
+      console.log("password");
+    } else if (target.type === "number") {
+      console.log("number");
+    }
+  });
+});
 </script>
 
 <template>
-  <div class="formControl formEmail">
+  <div
+    :id="state.id"
+    class="formControl"
+    :class="{
+      formEmail: props.data.inputType === 'email',
+    }"
+  >
     <form action="">
       <label :for="props.data.id" class="formLabel">{{
         props.data.label
       }}</label>
-      <div class="formBox">
+      <div
+        class="formBox"
+        :class="{
+          formError: state.validate === false,
+          formSuccess: state.validate === true,
+        }"
+      >
         <input
           class="formInput"
           :type="props.data.inputType"
@@ -27,7 +74,7 @@ const props = defineProps({
           <span class="blind">Confirm</span>
         </button>
       </div>
-      <mark class="formError"
+      <mark class="formErrorMsg" v-if="state.validate === false"
         >Please enter a valid {{ props.data.errorMsg }}!</mark
       >
     </form>
@@ -74,15 +121,21 @@ const props = defineProps({
     height: 100%;
   }
   &Error {
-    display: block;
-    margin-top: 9px;
-    font-family: "Exo 2";
-    font-size: 16px;
-    font-weight: 300;
-    letter-spacing: -0.24px;
-    text-align: left;
-    color: #f63;
-    padding-left: 16px;
+    border-color: #f63;
+    &Msg {
+      display: block;
+      margin-top: 9px;
+      font-family: "Exo 2";
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: -0.24px;
+      text-align: left;
+      color: #f63;
+      padding-left: 16px;
+    }
+  }
+  &Success {
+    border-color: #00c300;
   }
 }
 </style>

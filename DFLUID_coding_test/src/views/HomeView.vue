@@ -31,6 +31,22 @@ const state = reactive({
     btnType: "submit",
     errorMsg: "email",
   },
+  formDataPass: {
+    label: "Subscribe to our newsletter",
+    inputType: "password",
+    id: "passwordValidate",
+    btnIcon: "iconSubmit",
+    btnType: "submit",
+    errorMsg: "password",
+  },
+  formDataNum: {
+    label: "Subscribe to our newsletter",
+    inputType: "number",
+    id: "numberValidate",
+    btnIcon: "iconSubmit",
+    btnType: "submit",
+    errorMsg: "number",
+  },
 });
 </script>
 
@@ -56,6 +72,8 @@ const state = reactive({
       inventore.
     </p>
     <formControl :data="state.formData" />
+    <formControl :data="state.formDataPass" />
+    <formControl :data="state.formDataNum" />
   </section>
 </template>
 
@@ -73,8 +91,9 @@ const state = reactive({
   &Subscribe {
     position: relative;
     text-align: center;
-    background: url(@/assets/img/bg_sectionSubscribe_01.webp) no-repeat center;
-    background-size: cover;
+    background: url(@/assets/img/bg_sectionSubscribe_01.webp) no-repeat center
+      top;
+    background-size: 100%;
     color: #fff;
     padding-top: 152px;
     padding-bottom: 152px;
@@ -91,6 +110,12 @@ const state = reactive({
     }
     > * {
       position: relative;
+    }
+    .form {
+      &Control {
+        width: 500px;
+        margin: 95px auto 0;
+      }
     }
   }
 }
@@ -117,12 +142,6 @@ const state = reactive({
     line-height: 1.57;
     letter-spacing: -0.21px;
     opacity: 0.6;
-  }
-}
-.form {
-  &Email {
-    width: 500px;
-    margin: 95px auto 0;
   }
 }
 </style>

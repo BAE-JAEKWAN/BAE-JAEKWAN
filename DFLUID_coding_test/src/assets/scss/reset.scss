@@ -66,6 +66,15 @@ figure,
 figcaption {
   border: 0;
 }
+input {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #fff !important;
+  }
+}
 
 a {
   text-decoration: none;
