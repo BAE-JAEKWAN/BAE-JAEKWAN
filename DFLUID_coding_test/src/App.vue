@@ -1,19 +1,19 @@
 <script setup></script>
 
 <template>
-  <div class="wrap">
-    <header id="mainHeader">
+  <header id="mainHeader">
+    <div class="wrap">
       <h1>Snap photos and share like <br />never before</h1>
-    </header>
+    </div>
+  </header>
 
-    <main id="mainContents">
-      <RouterView />
-    </main>
-  </div>
+  <main id="mainContents">
+    <RouterView />
+  </main>
 </template>
 
 <style scoped lang="scss">
-.wrap {
+::v-deep(.wrap) {
   width: 1680px;
   padding: 0 80px;
   margin: 0 auto;

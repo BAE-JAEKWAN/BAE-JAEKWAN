@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 // import axios from "axios";
+import sectionTemp from "@/components/sectionTemp.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -13,6 +14,7 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.component("sectionTemp", sectionTemp);
 
 // 다른 컴포넌트에서는 import 없이 this.axios로 사용가능
 // app.config.globalProperties.$axios = axios;

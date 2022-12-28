@@ -1,7 +1,7 @@
 <script setup>
-import profileList from "@/components/profileList.vue";
-import formControl from "@/components/formControl.vue";
-import { reactive, onMounted } from "vue";
+import profileList from "@/module/profileList.vue";
+import validateForm from "@/module/validateForm.vue";
+import { reactive, onMounted, watch } from "vue";
 import axios from "axios";
 
 const state = reactive({
@@ -25,30 +25,40 @@ const state = reactive({
       url: "javascript:;",
     },
   ],
-  formData: {
-    label: "Subscribe to our newsletter",
-    inputType: "email",
-    id: "emailValidate",
-    btnIcon: "iconSubmit",
-    btnType: "submit",
-    errorMsg: "Please enter a valid email!",
+  formObj: {
+    formId: "validateForm",
+    formArray: [
+      {
+        label: "Subscribe to our newsletter",
+        inputType: "email",
+        id: "emailValidate",
+        btnIcon: "iconSubmit",
+        btnType: "submit",
+        errorMsg: "Please enter a valid email!",
+        validate: null,
+      },
+      {
+        label: "Validate Password",
+        inputType: "password",
+        id: "passwordValidate",
+        btnIcon: "iconSubmit",
+        btnType: "submit",
+        errorMsg: "Please enter a valid password!",
+        validate: null,
+      },
+      {
+        label: "Validate Phone number",
+        inputType: "number",
+        id: "numberValidate",
+        btnIcon: "iconSubmit",
+        btnType: "submit",
+        errorMsg: "Please enter a valid Phone number!",
+        validate: null,
+      },
+    ],
   },
-  formDataPass: {
-    label: "Validate Password",
-    inputType: "password",
-    id: "passwordValidate",
-    btnIcon: "iconSubmit",
-    btnType: "submit",
-    errorMsg: "Please enter a valid password!",
-  },
-  formDataNum: {
-    label: "Validate Number",
-    inputType: "number",
-    id: "numberValidate",
-    btnIcon: "iconSubmit",
-    btnType: "submit",
-    errorMsg: "Please enter a valid number!",
-  },
+  apiData: "",
+  randomBG: "",
 });
 
 // 만료 시간과 함께 데이터를 저장
@@ -81,18 +91,18 @@ function getItemWithExpireTime(keyName) {
     return null;
   }
   // 만료기간이 남아있는 경우, value 값 리턴
-  return (state.bgImgNum = obj.value);
+  state.randomBG = obj.value;
+  console.log("state에 로컬스토리지에 담겨있는 데이터 저장 :", state.randomBG);
+  return;
 }
 
 const randomNumber = (apiData) => {
   if (localStorage.getItem("sectionSubscribeBG")) {
+    // 저장된 로컬스토리지가 있으면 가져온다
     getItemWithExpireTime("sectionSubscribeBG");
   } else {
-    // 숫자 1~3까지 랜덤하게 지정
-
-    let val = apiData;
-    // 만료시간 로컬스토리지 저장 시간으로부터 하루 뒤로 설정
-    setItemWithExpireTime("sectionSubscribeBG", val, "8.64e+7");
+    // 저장된 로컬스토리지가 없으면 만료시간을 현재 시간으로부터 하루 뒤로 설정하고 저장한다
+    setItemWithExpireTime("sectionSubscribeBG", apiData, "8.64e+7");
     getItemWithExpireTime("sectionSubscribeBG");
   }
 };
@@ -113,37 +123,33 @@ const Util = {
 };
 const getAddrCodes = async () => {
   await Util.get(
-    // "https://api.unsplash.com/photos/random?client_id=RfZSbn_rdvEPrnhslq8HRwmCwyayZg3DBo_LDcXXaTM"
-    "http://jsonplaceholder.typicode.com/posts"
+    "https://api.unsplash.com/photos/random?client_id=RfZSbn_rdvEPrnhslq8HRwmCwyayZg3DBo_LDcXXaTM"
+    // "http://jsonplaceholder.typicode.com/posts" //테스트용 더미데이터
   )
     .then((result) => {
-      // return result?.data;
-      state.randomBG = result[0].title;
-      randomNumber(state.randomBG);
-      console.log("then :", state.randomBG);
+      state.apiData = result.urls.full;
+      // state.apiData = result[0].title //테스트용 더미데이터
+      randomNumber(state.apiData);
       return;
     })
     .catch((err) => console.error(err.message));
 };
 getAddrCodes();
 
-onMounted(() => {
-  console.log("onMounted :", state.randomBG);
-});
-mutations: {
-  console.log("mutations :", state.randomBG);
-}
+const validateUpdate = (result, index) => {
+  state.formObj.formArray[index].validate = result;
+};
 </script>
 
 <template>
-  <section class="sectionProfile">
+  <sectionTemp class="sectionProfile">
     <h2 class="blind">Profile section</h2>
     <profileList :profileData="state.profileData" />
-  </section>
+  </sectionTemp>
 
-  <section
-    class="sectionSubscribe sectionWide"
-    :style="`background-image: url(../src/assets/img/bg_sectionSubscribe_${state.bgImgNum}.webp);`"
+  <sectionTemp
+    class="sectionSubscribe"
+    :style="`background-image: url(${state.randomBG});`"
   >
     <h2 class="subsTitle">Sed ut perspiciatis unde omnis</h2>
     <p class="subsParagraph01">
@@ -159,22 +165,15 @@ mutations: {
       doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
       inventore.
     </p>
-    <formControl :data="state.formData" />
-    <formControl :data="state.formDataPass" />
-    <formControl :data="state.formDataNum" />
-  </section>
+
+    <validateForm :data="state.formObj" @validate="validateUpdate" />
+  </sectionTemp>
 </template>
 
 <style lang="scss" scoped>
 .section {
   &Profile {
     padding-bottom: 110px;
-  }
-  &Wide {
-    margin-left: -80px;
-    margin-right: -80px;
-    padding-left: 80px;
-    padding-right: 80px;
   }
   &Subscribe {
     position: relative;
@@ -196,13 +195,15 @@ mutations: {
       left: 0;
       background-color: rgba(0, 0, 0, 0.5);
     }
-    > * {
-      position: relative;
-    }
-    .form {
-      &Control {
-        width: 500px;
-        margin: 95px auto 0;
+    :deep() {
+      > * {
+        position: relative;
+      }
+      .form {
+        &Control {
+          width: 500px;
+          margin: 95px auto 0;
+        }
       }
     }
   }

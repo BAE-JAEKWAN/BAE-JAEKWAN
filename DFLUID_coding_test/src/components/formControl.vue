@@ -3,52 +3,16 @@ import { onMounted, reactive } from "vue";
 
 const props = defineProps({
   data: {
-    type: Object,
+    type: Array,
   },
 });
 const state = reactive({
   id: `form_${props.data.id}`,
-  validate: null,
-});
-
-const validEmail = (obj) => {
-  if (validEmailCheck(obj) == false) {
-    obj.value = "";
-    obj.focus();
-    return (state.validate = false);
-  } else {
-    return (state.validate = true);
-  }
-};
-const validEmailCheck = (obj) => {
-  const pattern =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  return obj.value.match(pattern) != null;
-};
-
-onMounted(() => {
-  document.getElementById(state.id).addEventListener("change", (e) => {
-    const target = e.target;
-    if (target.type === "email") {
-      console.log("email");
-      validEmail(target);
-    } else if (target.type === "password") {
-      console.log("password");
-    } else if (target.type === "number") {
-      console.log("number");
-    }
-  });
 });
 </script>
 
 <template>
-  <div
-    :id="state.id"
-    class="formControl"
-    :class="{
-      formEmail: props.data.inputType === 'email',
-    }"
-  >
+  <div :id="state.id" class="formControl">
     <form action="">
       <label :for="props.data.id" class="formLabel">{{
         props.data.label
@@ -56,8 +20,8 @@ onMounted(() => {
       <div
         class="formBox"
         :class="{
-          formError: state.validate === false,
-          formSuccess: state.validate === true,
+          formError: props.data.validate === false,
+          formSuccess: props.data.validate === true,
         }"
       >
         <input
@@ -70,12 +34,12 @@ onMounted(() => {
           :type="props.data.btnType"
           class="formBtn"
           :class="props.data.btnIcon"
-          :disabled="state.validate === false"
+          :disabled="props.data.validate === false"
         >
           <span class="blind">Confirm</span>
         </button>
       </div>
-      <mark class="formErrorMsg" v-if="state.validate === false">{{
+      <mark class="formErrorMsg" v-if="props.data.validate === false">{{
         props.data.errorMsg
       }}</mark>
     </form>
