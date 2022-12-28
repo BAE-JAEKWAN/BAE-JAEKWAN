@@ -1,7 +1,9 @@
 <script setup>
 import profileList from "@/components/profileList.vue";
 import formControl from "@/components/formControl.vue";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
+import axios from "axios";
+
 const state = reactive({
   profileData: [
     {
@@ -82,17 +84,55 @@ function getItemWithExpireTime(keyName) {
   return (state.bgImgNum = obj.value);
 }
 
-const randomNumber = (() => {
+const randomNumber = (apiData) => {
   if (localStorage.getItem("sectionSubscribeBG")) {
     getItemWithExpireTime("sectionSubscribeBG");
   } else {
     // 숫자 1~3까지 랜덤하게 지정
-    let val = Math.floor(Math.random() * 3) + 1;
+
+    let val = apiData;
     // 만료시간 로컬스토리지 저장 시간으로부터 하루 뒤로 설정
     setItemWithExpireTime("sectionSubscribeBG", val, "8.64e+7");
     getItemWithExpireTime("sectionSubscribeBG");
   }
-})();
+};
+
+// API 연결
+const Util = {
+  get(url) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(url)
+        .then((res) => resolve(res.data))
+        .catch((err) => {
+          console.error(new Date(), "[axiosGet] ", { url, err });
+          reject(err);
+        });
+    });
+  },
+};
+const getAddrCodes = async () => {
+  await Util.get(
+    // "https://api.unsplash.com/photos/random?client_id=RfZSbn_rdvEPrnhslq8HRwmCwyayZg3DBo_LDcXXaTM"
+    "http://jsonplaceholder.typicode.com/posts"
+  )
+    .then((result) => {
+      // return result?.data;
+      state.randomBG = result[0].title;
+      randomNumber(state.randomBG);
+      console.log("then :", state.randomBG);
+      return;
+    })
+    .catch((err) => console.error(err.message));
+};
+getAddrCodes();
+
+onMounted(() => {
+  console.log("onMounted :", state.randomBG);
+});
+mutations: {
+  console.log("mutations :", state.randomBG);
+}
 </script>
 
 <template>
