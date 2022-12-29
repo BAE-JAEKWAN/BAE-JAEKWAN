@@ -142,7 +142,7 @@ const validateUpdate = (result, index) => {
 </script>
 
 <template>
-  <sectionTemp class="sectionProfile">
+  <sectionTemp class="sectionProfile" type="section">
     <h2 class="blind">Profile section</h2>
     <profileList :profileData="state.profileData" />
   </sectionTemp>
@@ -150,6 +150,7 @@ const validateUpdate = (result, index) => {
   <sectionTemp
     class="sectionSubscribe"
     :style="`background-image: url(${state.randomBG});`"
+    type="section"
   >
     <h2 class="subsTitle">Sed ut perspiciatis unde omnis</h2>
     <p class="subsParagraph01">

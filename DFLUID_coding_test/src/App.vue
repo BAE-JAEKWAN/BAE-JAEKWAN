@@ -1,11 +1,7 @@
 <script setup></script>
 
 <template>
-  <header id="mainHeader">
-    <div class="wrap">
-      <h1>Snap photos and share like <br />never before</h1>
-    </div>
-  </header>
+  <mainHeader text="Snap photos and share like <br />never before" />
 
   <main id="mainContents">
     <RouterView />

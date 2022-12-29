@@ -1,7 +1,15 @@
+<script setup>
+const props = defineProps({
+  type: {
+    type: String,
+  },
+});
+</script>
+
 <template>
-  <section>
+  <component :is="props.type">
     <div class="wrap">
       <slot />
     </div>
-  </section>
+  </component>
 </template>
