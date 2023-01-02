@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 함수 표현식과 함수 선언식의 차이
+
+      // 함수 표현식
+      function sum1(a, b) {
+        return a + b;
+      }
+
+      // 함수 선언식
+      const sum2 = function (a, b) {
+        return a + b;
+      };
+
+      //   둘 모두 결과는 동일.
+      console.log("sum1 :", sum1(1, 2));
+      console.log("sum2 :", sum2(1, 2));
+
+      //   그렇다면 왜?! 쓰는 것인가?
+      //   바로 호이스팅에 차이가 있음.
+      sum(50, 50); // 100 : 정상
+      minus(100, 50); // Uncaught TypeError: minus is not a function : 에러
+
+      // 함수 선언식
+      function sum(a, b) {
+        return a + b;
+      }
+
+      // 함수 표현식
+      var minus = function (a, b) {
+        return a - b;
+      };
+
+      //   함수 선언식은 함수 전체를 호이스팅. 정의된 범위의 위로 호이스팅 되기 때문에 함수 선언 전에도 사용 가능.
+      //   험수 표현식은 별도의 변수에 할당. 변수는 선언부와 할당부를 나누어 호이스팅. 즉 선언부만 호이스팅 하게 됨.
+
+      //   그러면 함수 선언식이 더 좋은거 아니냐??
+      //   전역적으로 선언하게 되면 중복적으로 동명의 함수를 쓸 경우 원치 않은 결과를 초래할 수 있음. 따라서 함수 표현식을 더 권장.
+    </script>
+  </body>
+</html>
