@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prototype 상속</title>
+  </head>
+  <body>
+    <script>
+      let animal = {
+        eats: true,
+        walk(name) {
+          console.log(name + " 걷는다.");
+        },
+      };
+      let rabbit = {
+        jumps: true,
+      };
+
+      Object.setPrototypeOf(rabbit, animal);
+
+      //   위와 결과 동일.
+      //   let rabbit = Object.create(animal, {
+      //     jumps: {
+      //       value: true,
+      //     },
+      //   });
+
+      // animal의 프로퍼티를 rabbit에서도 사용 가능.
+      console.log("rabbit :", rabbit);
+      console.log("eats :", rabbit.eats);
+      console.log("jumps :", rabbit.jumps);
+      rabbit.walk("rabbit");
+
+      //  프로토타입 체이닝
+      let longEar = {
+        earLength: 10,
+      };
+      Object.setPrototypeOf(longEar, rabbit);
+      console.log("longEar :", longEar);
+      console.log("jumps :", longEar.jumps);
+      longEar.walk("longEar");
+
+      // 프로토타입은 읽기 전용이기 때문에 추가, 수정 등 연산은 객체에서 직접 실행해야 됨.
+      (rabbit.walk = () => {
+        console.log("토끼가 걷는다");
+      })();
+
+      //
+      // 문제1.
+      let Macropodidae = {
+        jumps: null,
+      };
+      let Kangaroo = {
+        jumps: true,
+      };
+      Object.setPrototypeOf(Kangaroo, Macropodidae);
+
+      console.log("(1) :", Kangaroo.jumps);
+
+      delete Kangaroo.jumps;
+      console.log("(2) :", Kangaroo.jumps);
+
+      delete Macropodidae.jumps;
+      console.log("(3) :", Kangaroo.jumps);
+
+      //
+      // 문제2. glasses를 얻으려면 pockets.glasses, head.glasses 중에 뭐가 더 빠를까?
+      let head = {
+        glasses: 1,
+      };
+
+      let table = {
+        pen: 3,
+      };
+
+      let bed = {
+        sheet: 1,
+        pillow: 2,
+      };
+
+      let pockets = {
+        money: 2000,
+      };
+      Object.setPrototypeOf(table, head);
+      Object.setPrototypeOf(bed, table);
+      Object.setPrototypeOf(pockets, bed);
+      console.log("pockets :", pockets);
+      console.log(pockets.glasses);
+      console.log(head.glasses);
+
+      //
+      // 문제3. 두 햄스터 speedy와 lazy 중, 한마리에게만 먹이를 줘도 다른 햄스터까지 배가 부름. 이 현상을 수정하려면 어떻게 해야 될까?
+      let hamster = {
+        stomach: [],
+
+        eat(food) {
+          this.stomach.push(food);
+        },
+      };
+      let speedy = {};
+      Object.setPrototypeOf(speedy, hamster);
+
+      let lazy = {};
+      Object.setPrototypeOf(lazy, hamster);
+
+      // speedy가 음식을 먹는다.
+      speedy.eat("apple");
+      console.log(speedy.stomach);
+
+      // lazy는 음식을 먹지 않았는데 배에 apple이 있다.
+      console.log(lazy.stomach);
+    </script>
+  </body>
+</html>
