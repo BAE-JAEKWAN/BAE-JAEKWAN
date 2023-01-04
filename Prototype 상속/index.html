@@ -94,7 +94,6 @@
       // 문제3. 두 햄스터 speedy와 lazy 중, 한마리에게만 먹이를 줘도 다른 햄스터까지 배가 부름. 이 현상을 수정하려면 어떻게 해야 될까?
       let hamster = {
         stomach: [],
-
         eat(food) {
           this.stomach.push(food);
         },
@@ -111,6 +110,33 @@
 
       // lazy는 음식을 먹지 않았는데 배에 apple이 있다.
       console.log(lazy.stomach);
+
+      // 방법 1. 각각의 햄스터에게 stomach를 만들어 준다.
+      //  let speedy = {
+      //   stomach: [],
+      // };
+      // let lazy = {
+      //   stomach: [],
+      // };
+
+      // 방법 2. stomach에 push 함수가 아닌 할당연산자를 사용.
+      // let hamster = {
+      //   stomach: [],
+      //   eat(food) {
+      //     this.stomach = [food];
+      //   },
+      // };
+
+      // 방법 3. 스프레드 연산자를 사용하면 여러번 함수를 실행해도 모두 stomach에 저장이 된다.
+      // let hamster = {
+      //   stomach: [],
+      //   eat(food) {
+      //     this.stomach = [...this.stomach, food];
+      //   },
+      // };
+      // speedy.eat("apple");
+      // speedy.eat("apple2");
+      // speedy.eat("apple3");
     </script>
   </body>
 </html>
