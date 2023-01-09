@@ -1,0 +1,10 @@
+@charset "utf-8";
+#map {
+  height: calc(100vh - 84px);
+}
+.title {
+  font-size: 44px;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
+}
