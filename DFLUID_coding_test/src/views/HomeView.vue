@@ -74,7 +74,7 @@ const setItemWithExpireTime = (keyName, keyValue, tts) => {
   window.localStorage.setItem(keyName, objString);
 };
 
-function getItemWithExpireTime(keyName) {
+const getItemWithExpireTime = (keyName) => {
   // localStorage 값 읽기 (문자열)
   const objString = window.localStorage.getItem(keyName);
   // null 체크
@@ -94,7 +94,7 @@ function getItemWithExpireTime(keyName) {
   state.randomBG = obj.value;
   console.log("state에 로컬스토리지에 담겨있는 데이터 저장 :", state.randomBG);
   return;
-}
+};
 
 const randomNumber = (apiData) => {
   if (localStorage.getItem("sectionSubscribeBG")) {
