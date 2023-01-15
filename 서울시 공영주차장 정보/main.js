@@ -1,13 +1,14 @@
 const API_KEY = "4878467965626a6b34355851476d4e";
+
 // await를 쓰려면 async를 선언해줘야 함.
 const getData = async (curentLat, curentLng, localName) => {
   const url = `http://openapi.seoul.go.kr:8088/${API_KEY}/json/GetParkInfo/1/20/${localName}`;
-  console.log(url);
+  // console.log(url);
 
   // await를 쓰는 이유 : url을 받을 때까지 기다려줘라!
   const response = await fetch(url);
   const data = await response.json();
-  const markerLocation = data.GetParkInfo.row.map((el) => [
+  const parkingInfo = data.GetParkInfo.row.map((el) => [
     {
       name: el.PARKING_NAME,
       addr: el.ADDR,
@@ -21,10 +22,10 @@ const getData = async (curentLat, curentLng, localName) => {
       lng: el.LNG,
     },
   ]);
-  // console.log(markerLocation);
+  // console.log(parkingInfo);
 
   // 위 로직으로부터 전달 받은 마커 좌표, 현재 위치 좌표를 drawMap 함수로 전달한다.
-  drawMap(markerLocation, curentLat, curentLng);
+  drawMap(parkingInfo, curentLat, curentLng);
 };
 
 // 현재 위치 구하기
@@ -51,15 +52,15 @@ navigator.geolocation.getCurrentPosition(function (pos) {
 });
 
 // 맵 그리기 로직 시작
-const drawMap = (markerLocation, curentLat, curentLng) => {
+const drawMap = (parkingInfo, curentLat, curentLng) => {
   const map = new naver.maps.Map(document.getElementById("map"), {
     // 지도 option 설정
     center: new naver.maps.LatLng(curentLat, curentLng),
-    zoom: 13,
+    zoom: 15,
   });
   const markers = [];
   const infoWindows = [];
-  markerLocation.forEach((el) => {
+  parkingInfo.forEach((el) => {
     // console.log(el[0].name, el[0].lat, el[0].lng);
     const location = new naver.maps.LatLng(el[0].lat, el[0].lng);
     const marker = new naver.maps.Marker({
