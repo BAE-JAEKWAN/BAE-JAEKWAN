@@ -16,11 +16,11 @@
     <div class="title-area">
       <h3 class="title-area__title">사업인벤토리</h3>
       <q-btn
-        :icon="isFavorite ? `fa-solid fa-star` :`fa-regular fa-star`"
+        :icon="isFavorite ? `fa-solid fa-star` : `fa-regular fa-star`"
         size="md"
         unelevated
         class="title-area__favorite-btn"
-        @click="isFavorite=!isFavorite"
+        @click="isFavorite = !isFavorite"
         :ripple="false"
       />
     </div>
@@ -52,22 +52,12 @@
 
         <div class="input__container">
           <div class="input__title">사업단계</div>
-          <q-select
-            outlined
-            v-model="model2"
-            :options="options2"
-            dense
-          />
+          <q-select outlined v-model="model2" :options="options2" dense />
         </div>
 
         <div class="input__container">
           <div class="input__title">사업유형</div>
-          <q-select
-            outlined
-            v-model="model2"
-            :options="options2"
-            dense
-          />
+          <q-select outlined v-model="model2" :options="options2" dense />
         </div>
       </div>
     </div>
@@ -95,16 +85,28 @@
             <q-th>
               <q-checkbox v-model="props.selected" dense />
             </q-th>
-            <q-th
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
-            >
+            <q-th v-for="col in props.cols" :key="col.name" :props="props">
               {{ col.label }}
-              <q-tooltip anchor="bottom middle" self="center left" :offset="[-20, 0]">
-                <span v-if="pagination.sortBy!==col.label">오름차순</span>
-                <span v-else-if="pagination.sortBy===col.label && pagination.descending===false">내림차순</span>
-                <span v-else-if="pagination.sortBy===col.label && pagination.descending===true">정렬지우기</span>
+              <q-tooltip
+                anchor="bottom middle"
+                self="center left"
+                :offset="[-20, 0]"
+              >
+                <span v-if="pagination.sortBy !== col.label">오름차순</span>
+                <span
+                  v-else-if="
+                    pagination.sortBy === col.label &&
+                    pagination.descending === false
+                  "
+                  >내림차순</span
+                >
+                <span
+                  v-else-if="
+                    pagination.sortBy === col.label &&
+                    pagination.descending === true
+                  "
+                  >정렬지우기</span
+                >
               </q-tooltip>
             </q-th>
           </q-tr>
@@ -124,10 +126,18 @@
           color="teal-50"
           text-color="primary"
           active-color="primary"
-          :icon-first="pagination.page === 1  ? 'none' : 'keyboard_double_arrow_left'"
+          :icon-first="
+            pagination.page === 1 ? 'none' : 'keyboard_double_arrow_left'
+          "
           :icon-prev="pagination.page === 1 ? 'none' : 'keyboard_arrow_left'"
-          :icon-next="pagination.page === pagesNumber ? 'none' : 'keyboard_arrow_right'"
-          :icon-last="pagination.page === pagesNumber ? 'none' : 'keyboard_double_arrow_right'"
+          :icon-next="
+            pagination.page === pagesNumber ? 'none' : 'keyboard_arrow_right'
+          "
+          :icon-last="
+            pagination.page === pagesNumber
+              ? 'none'
+              : 'keyboard_double_arrow_right'
+          "
         />
       </div>
     </div>
@@ -162,7 +172,7 @@
         left-icon=""
         right-icon=""
       >
-        <div style="padding: 0 16px; white-space: nowrap;">구분</div>
+        <div style="padding: 0 16px; white-space: nowrap">구분</div>
         <q-tab name="1" label="월별 손익 현황" :ripple="false" />
         <q-tab name="2" label="월별 손익 현황(재무)" :ripple="false" />
         <q-tab name="3" label="재료비" :ripple="false" />
@@ -245,26 +255,45 @@
                 <q-td>1</q-td>
               </q-tr>
             </template>
-
           </q-table>
         </q-tab-panel>
 
         <q-tab-panel name="2">
           <div class="text-h4 q-mb-md">Alarms</div>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa
-            fuga nulla ullam. In, libero.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa
-            fuga nulla ullam. In, libero.</p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
+            praesentium cumque magnam odio iure quidem, quod illum numquam
+            possimus obcaecati commodi minima assumenda consectetur culpa fuga
+            nulla ullam. In, libero.
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
+            praesentium cumque magnam odio iure quidem, quod illum numquam
+            possimus obcaecati commodi minima assumenda consectetur culpa fuga
+            nulla ullam. In, libero.
+          </p>
         </q-tab-panel>
 
         <q-tab-panel name="3">
           <div class="text-h4 q-mb-md">Movies</div>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa
-            fuga nulla ullam. In, libero.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa
-            fuga nulla ullam. In, libero.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa
-            fuga nulla ullam. In, libero.</p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
+            praesentium cumque magnam odio iure quidem, quod illum numquam
+            possimus obcaecati commodi minima assumenda consectetur culpa fuga
+            nulla ullam. In, libero.
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
+            praesentium cumque magnam odio iure quidem, quod illum numquam
+            possimus obcaecati commodi minima assumenda consectetur culpa fuga
+            nulla ullam. In, libero.
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis
+            praesentium cumque magnam odio iure quidem, quod illum numquam
+            possimus obcaecati commodi minima assumenda consectetur culpa fuga
+            nulla ullam. In, libero.
+          </p>
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -307,11 +336,7 @@
               <div class="col-md-3 col-sm-4 form__content"></div>
               <div class="col-md-1 col-sm-2 form__title">사업유형</div>
               <div class="col-md-3 col-sm-4 form__content">
-                <q-select
-                  outlined
-                  v-model="model2"
-                  :options="options2"
-                />
+                <q-select outlined v-model="model2" :options="options2" />
               </div>
               <div class="col-md-1 col-sm-2 form__title">사업분류</div>
               <div class="col-md-3 col-sm-4 form__content">-</div>
@@ -321,14 +346,22 @@
               <div class="col-md-3 col-sm-4 form__content">
                 <q-input v-model="text" outlined suffix="원" type="number" />
               </div>
-              <div class="col-md-1 col-sm-2 form__title">사전영업기간 시작일</div>
+              <div class="col-md-1 col-sm-2 form__title">
+                사전영업기간 시작일
+              </div>
               <div class="col-md-3 col-sm-4 form__content">
                 <q-input v-model="text" outlined type="date" />
               </div>
               <div class="col-md-1 col-sm-2 form__title">VRB수행여부</div>
               <div class="col-md-3 col-sm-10 form__content">
-                <q-checkbox v-model="checkBoxTest.checkbox1" label="사업참여VRB" />
-                <q-checkbox v-model="checkBoxTest.checkbox2" label="입찰참여VRB" />
+                <q-checkbox
+                  v-model="checkBoxTest.checkbox1"
+                  label="사업참여VRB"
+                />
+                <q-checkbox
+                  v-model="checkBoxTest.checkbox2"
+                  label="입찰참여VRB"
+                />
               </div>
             </div>
             <div class="row">
@@ -348,12 +381,30 @@
                   multiple
                   color="transparent"
                 >
-                  <template v-slot:list="upload" v-if="upload?.queuedFiles !== undefined">{{ upload.queuedFiles }}</template>
+                  <template
+                    v-slot:list="upload"
+                    v-if="upload?.queuedFiles !== undefined"
+                    >{{ upload.queuedFiles }}</template
+                  >
                   <template v-slot:header="scope">
-                    <q-btn v-if="scope.canAddFiles" @click="scope.pickFiles" color="blue" outline rounded label="파일선택">
+                    <q-btn
+                      v-if="scope.canAddFiles"
+                      @click="scope.pickFiles"
+                      color="blue"
+                      outline
+                      rounded
+                      label="파일선택"
+                    >
                       <q-uploader-add-trigger />
                     </q-btn>
-                    <q-btn v-if="scope.queuedFiles.length > 0" @click="scope.removeQueuedFiles" color="red" outline rounded style="margin-left: 5px">
+                    <q-btn
+                      v-if="scope.queuedFiles.length > 0"
+                      @click="scope.removeQueuedFiles"
+                      color="red"
+                      outline
+                      rounded
+                      style="margin-left: 5px"
+                    >
                       전체삭제
                     </q-btn>
                   </template>
@@ -361,7 +412,6 @@
               </div>
             </div>
           </div>
-
         </q-expansion-item>
 
         <q-expansion-item
@@ -378,12 +428,12 @@
               <div class="col-2 form__head">재료비</div>
               <div class="col-8 form__head">평가기준</div>
               <div class="col-2 form__body">가격경쟁력</div>
-              <div class="col-1 column" style="height:100px;">
+              <div class="col-1 column" style="height: 100px">
                 <div class="col form__body">5</div>
                 <div class="col form__body">3</div>
                 <div class="col form__body">1</div>
               </div>
-              <div class="col-1 column" style="height:100px;">
+              <div class="col-1 column" style="height: 100px">
                 <div class="col form__body">
                   <q-radio v-model="radio" val="5" size="xs" />
                 </div>
@@ -394,21 +444,27 @@
                   <q-radio v-model="radio" val="1" size="xs" />
                 </div>
               </div>
-              <div class="col-8 column" style="height:100px;">
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
+              <div class="col-8 column" style="height: 100px">
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
               </div>
             </div>
             <div class="row">
               <div class="col-1 form__body">고객관계</div>
               <div class="col-1 form__body">Key-man 확보</div>
-              <div class="col-1 column" style="height:100px;">
+              <div class="col-1 column" style="height: 100px">
                 <div class="col form__body">5</div>
                 <div class="col form__body">3</div>
                 <div class="col form__body">1</div>
               </div>
-              <div class="col-1 column" style="height:100px;">
+              <div class="col-1 column" style="height: 100px">
                 <div class="col form__body">
                   <q-radio v-model="radio2" val="5" size="xs" />
                 </div>
@@ -419,14 +475,19 @@
                   <q-radio v-model="radio2" val="1" size="xs" />
                 </div>
               </div>
-              <div class="col-8 column" style="height:100px;">
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
-                <div class="col form__body">당사가 경쟁사 대비 저가 제공기능</div>
+              <div class="col-8 column" style="height: 100px">
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
+                <div class="col form__body">
+                  당사가 경쟁사 대비 저가 제공기능
+                </div>
               </div>
             </div>
           </div>
-
         </q-expansion-item>
       </q-list>
     </div>
@@ -446,23 +507,33 @@
         <div class="chart__chip-sort">
           <div class="chart__chip-container">
             <div class="chart__chip chip1"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공2사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공2사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip2"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공3사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공3사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip3"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공4사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공4사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip4"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공5사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공5사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip5"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공6사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공6사업부</span
+            >
           </div>
         </div>
         <div class="flex no-wrap">
@@ -521,19 +592,27 @@
         <div class="chart__chip-sort">
           <div class="chart__chip-container">
             <div class="chart__chip chip1"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공2사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공2사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip2"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공3사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공3사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip3"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공4사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공4사업부</span
+            >
           </div>
           <div class="chart__chip-container">
             <div class="chart__chip chip4"></div>
-            <span class="chart__chip-name">P&S_공공부문_공공1사업본부_공공5사업부</span>
+            <span class="chart__chip-name"
+              >P&S_공공부문_공공1사업본부_공공5사업부</span
+            >
           </div>
         </div>
         <div class="chart__graph">
@@ -555,11 +634,12 @@
     </div>
 
     <div class="container">
-
       <div class="row justify-center">
-        <div style="display: flex; width: 100%;">
+        <div style="display: flex; width: 100%">
           <!-- 레인지 피커 -->
-          <div style="display: flex; justify-content: center; align-items: center;">
+          <div
+            style="display: flex; justify-content: center; align-items: center"
+          >
             <q-checkbox
               v-model="mobile"
               label="Mobile selection (first click, second click)"
@@ -572,7 +652,7 @@
             :selected-start-end-dates="startEndDates"
             no-active-date
             :day-min-height="120"
-            :locale="ko-KR"
+            :locale="ko - KR"
             animated
             bordered
             @mousedown-day="onMouseDownDay"
@@ -586,8 +666,14 @@
       <q-dialog v-model="confirm" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
-            <span class="q-ml-sm">You are currently not connected to any network.</span>
+            <q-avatar
+              icon="signal_wifi_off"
+              color="primary"
+              text-color="white"
+            />
+            <span class="q-ml-sm"
+              >You are currently not connected to any network.</span
+            >
           </q-card-section>
 
           <q-card-actions align="right">
@@ -597,7 +683,6 @@
         </q-card>
       </q-dialog>
     </div>
-
   </q-page>
 </template>
 
@@ -608,35 +693,45 @@ import MainAside from 'layouts/MainAside.vue';
 import {
   QCalendarMonth,
   getDayIdentifier,
-  today
-} from '@quasar/quasar-ui-qcalendar/src/index.js'
-import '@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass'
-import '@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass'
-import '@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass'
+  today,
+} from '@quasar/quasar-ui-qcalendar/src/index.js';
+import '@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass';
+import '@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass';
+import '@quasar/quasar-ui-qcalendar/src/QCalendarMonth.sass';
 
 // 즐겨찾는 메뉴
 const isFavorite = ref(false);
 
 // 텍스트형 셀렉터
-const stringOptions = ['google', '구글', '구글111', '페이스북', '트위터', '애플', '오라클'];
+const stringOptions = [
+  'google',
+  '구글',
+  '구글111',
+  '페이스북',
+  '트위터',
+  '애플',
+  '오라클',
+];
 const options = ref(stringOptions);
 const model = ref(null);
 const placeholder = ref('사업명 찾기');
 
 const filterFn = (val, update) => {
-  console.log(typeof val, typeof update)
+  console.log(typeof val, typeof update);
   if (val.length < 2) {
     update(() => {
       options.value = ['한글자 이상 입력해주세요'];
-    })
+    });
   } else {
     update(() => {
-      const needle = val.toLowerCase()
-      options.value = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
-      placeholder.value = ''
-    })
+      const needle = val.toLowerCase();
+      options.value = stringOptions.filter(
+        (v) => v.toLowerCase().indexOf(needle) > -1
+      );
+      placeholder.value = '';
+    });
   }
-}
+};
 
 // 셀렉터
 const model2 = ref('-- 전체 --');
@@ -644,16 +739,71 @@ const options2 = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'];
 
 // 테이블
 const columns = [
-  { name: '사업코드', align: 'center', label: '사업코드', field: 'calories', sortable: true, sortState: 'descending' },
-  { name: '사업명', align: 'center', label: '사업명', field: 'fat', sortable: true },
-  { name: '사업단계', align: 'center', label: '사업단계', field: 'carbs', sortable: true },
-  { name: '매출처', align: 'center', label: '매출처', field: 'protein', sortable: true },
-  { name: '발주처', align: 'center', label: '발주처', field: 'sodium', sortable: true },
-  { name: '수요처', align: 'center', label: '수요처', field: 'calcium', sortable: true },
-  { name: '영업대표', align: 'center', label: '영업대표', field: 'iron', sortable: true },
-  { name: '결제상태', align: 'center', label: '수요처', field: 'calcium', sortable: true },
-  { name: '사업유형', align: 'center', label: '수요처', field: 'calcium', sortable: true }
-]
+  {
+    name: '사업코드',
+    align: 'center',
+    label: '사업코드',
+    field: 'calories',
+    sortable: true,
+    sortState: 'descending',
+  },
+  {
+    name: '사업명',
+    align: 'center',
+    label: '사업명',
+    field: 'fat',
+    sortable: true,
+  },
+  {
+    name: '사업단계',
+    align: 'center',
+    label: '사업단계',
+    field: 'carbs',
+    sortable: true,
+  },
+  {
+    name: '매출처',
+    align: 'center',
+    label: '매출처',
+    field: 'protein',
+    sortable: true,
+  },
+  {
+    name: '발주처',
+    align: 'center',
+    label: '발주처',
+    field: 'sodium',
+    sortable: true,
+  },
+  {
+    name: '수요처',
+    align: 'center',
+    label: '수요처',
+    field: 'calcium',
+    sortable: true,
+  },
+  {
+    name: '영업대표',
+    align: 'center',
+    label: '영업대표',
+    field: 'iron',
+    sortable: true,
+  },
+  {
+    name: '결제상태',
+    align: 'center',
+    label: '수요처',
+    field: 'calcium',
+    sortable: true,
+  },
+  {
+    name: '사업유형',
+    align: 'center',
+    label: '수요처',
+    field: 'calcium',
+    sortable: true,
+  },
+];
 const originalRows = [
   {
     name: '1',
@@ -663,7 +813,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '2',
@@ -673,7 +823,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '3',
@@ -683,7 +833,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '4',
@@ -693,7 +843,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 413,
     calcium: '3%',
-    iron: '8%'
+    iron: '8%',
   },
   {
     name: '5',
@@ -703,7 +853,7 @@ const originalRows = [
     protein: 3.9,
     sodium: 327,
     calcium: '7%',
-    iron: '16%'
+    iron: '16%',
   },
   {
     name: '6',
@@ -713,7 +863,7 @@ const originalRows = [
     protein: 0.0,
     sodium: 50,
     calcium: '0%',
-    iron: '0%'
+    iron: '0%',
   },
   {
     name: '7',
@@ -723,7 +873,7 @@ const originalRows = [
     protein: 0,
     sodium: 38,
     calcium: '0%',
-    iron: '2%'
+    iron: '2%',
   },
   {
     name: '8',
@@ -733,7 +883,7 @@ const originalRows = [
     protein: 6.5,
     sodium: 562,
     calcium: '0%',
-    iron: '45%'
+    iron: '45%',
   },
   {
     name: '9',
@@ -743,7 +893,7 @@ const originalRows = [
     protein: 4.9,
     sodium: 326,
     calcium: '2%',
-    iron: '22%'
+    iron: '22%',
   },
   {
     name: '10',
@@ -753,7 +903,7 @@ const originalRows = [
     protein: 7,
     sodium: 54,
     calcium: '12%',
-    iron: '6%'
+    iron: '6%',
   },
   {
     name: '11',
@@ -763,7 +913,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '12',
@@ -773,7 +923,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '13',
@@ -783,7 +933,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '14',
@@ -793,7 +943,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '15',
@@ -803,7 +953,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '16',
@@ -813,7 +963,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '17',
@@ -823,7 +973,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '18',
@@ -833,7 +983,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '19',
@@ -843,7 +993,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '20',
@@ -853,7 +1003,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '21',
@@ -863,7 +1013,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '22',
@@ -873,7 +1023,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '23',
@@ -883,7 +1033,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '24',
@@ -893,7 +1043,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '25',
@@ -903,7 +1053,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '26',
@@ -913,7 +1063,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '27',
@@ -923,7 +1073,7 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
+    iron: '7%',
   },
   {
     name: '28',
@@ -933,7 +1083,7 @@ const originalRows = [
     protein: 4.0,
     sodium: 87,
     calcium: '14%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '29',
@@ -943,7 +1093,7 @@ const originalRows = [
     protein: 4.3,
     sodium: 129,
     calcium: '8%',
-    iron: '1%'
+    iron: '1%',
   },
   {
     name: '30',
@@ -953,24 +1103,26 @@ const originalRows = [
     protein: 6.0,
     sodium: 337,
     calcium: '6%',
-    iron: '7%'
-  }
-]
+    iron: '7%',
+  },
+];
 const selected = ref([]);
 const rows = ref([...originalRows]);
 const removeRow = () => {
-  console.log('remove')
-}
+  console.log('remove');
+};
 
 // 페이지네이션
 const pagination = ref({
   sortBy: null,
   descending: false,
   page: 1,
-  rowsPerPage: 10
+  rowsPerPage: 10,
   // rowsNumber: xx if getting data from a server
-})
-const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
+});
+const pagesNumber = computed(() =>
+  Math.ceil(rows.value.length / pagination.value.rowsPerPage)
+);
 
 // 탭
 const tab = ref('1');
@@ -979,14 +1131,70 @@ const tab2 = ref('mails');
 // 테이블2
 const table2 = {
   columns: [
-    { name: '구분', align: 'center', label: '구분', field: 'calories', sortable: true, rowspan: 3 },
-    { name: '성명', align: 'center', label: '성명', field: 'fat', sortable: true, rowspan: 3 },
-    { name: '업무구분', align: 'center', label: '업무구분', field: 'carbs', sortable: true, rowspan: 3 },
-    { name: '등급', align: 'center', label: '등급', field: 'protein', sortable: true, rowspan: 3 },
-    { name: '총합계', align: 'center', label: '총합계', field: 'sodium', sortable: true, rowspan: 1 },
-    { name: '잔여금액', align: 'center', label: '잔여금액', field: 'calcium', sortable: true, rowspan: 1 },
-    { name: '리스크비용', align: 'center', label: '리스크비용', field: 'iron', sortable: true, rowspan: 1 },
-    { name: '무상유지보수', align: 'center', label: '무상유지보수', field: 'calcium', sortable: true, rowspan: 3 }
+    {
+      name: '구분',
+      align: 'center',
+      label: '구분',
+      field: 'calories',
+      sortable: true,
+      rowspan: 3,
+    },
+    {
+      name: '성명',
+      align: 'center',
+      label: '성명',
+      field: 'fat',
+      sortable: true,
+      rowspan: 3,
+    },
+    {
+      name: '업무구분',
+      align: 'center',
+      label: '업무구분',
+      field: 'carbs',
+      sortable: true,
+      rowspan: 3,
+    },
+    {
+      name: '등급',
+      align: 'center',
+      label: '등급',
+      field: 'protein',
+      sortable: true,
+      rowspan: 3,
+    },
+    {
+      name: '총합계',
+      align: 'center',
+      label: '총합계',
+      field: 'sodium',
+      sortable: true,
+      rowspan: 1,
+    },
+    {
+      name: '잔여금액',
+      align: 'center',
+      label: '잔여금액',
+      field: 'calcium',
+      sortable: true,
+      rowspan: 1,
+    },
+    {
+      name: '리스크비용',
+      align: 'center',
+      label: '리스크비용',
+      field: 'iron',
+      sortable: true,
+      rowspan: 1,
+    },
+    {
+      name: '무상유지보수',
+      align: 'center',
+      label: '무상유지보수',
+      field: 'calcium',
+      sortable: true,
+      rowspan: 3,
+    },
   ],
   rows: [
     {
@@ -997,10 +1205,10 @@ const table2 = {
       protein: '중급',
       sodium: 2,
       calcium: 0,
-      iron: '1%'
-    }
-  ]
-}
+      iron: '1%',
+    },
+  ],
+};
 
 // const date = ref('2019/02/01');
 
@@ -1008,18 +1216,17 @@ const text = ref(null);
 
 const checkBoxTest = ref({
   checkbox1: ref(true),
-  checkbox2: ref(false)
-})
+  checkbox2: ref(false),
+});
 
 const editor = ref(null);
 
 const radio = ref(null);
 const radio2 = ref(null);
 
-
 // 레인지 셀렉터
 function leftClick(e) {
-  return e.button === 0
+  return e.button === 0;
 }
 
 const selectedDate = ref(today()),
@@ -1030,103 +1237,104 @@ const selectedDate = ref(today()),
   mobile = ref(false),
   confirm = ref(false);
 
-
 const startEndDates = computed(() => {
-  const dates = []
-  if (anchorDayIdentifier.value !== false && otherDayIdentifier.value !== false) {
+  const dates = [];
+  if (
+    anchorDayIdentifier.value !== false &&
+    otherDayIdentifier.value !== false
+  ) {
     if (anchorDayIdentifier.value <= otherDayIdentifier.value) {
-      dates.push(anchorTimestamp.value.date, otherTimestamp.value.date)
+      dates.push(anchorTimestamp.value.date, otherTimestamp.value.date);
     } else {
-      dates.push(otherTimestamp.value.date, anchorTimestamp.value.date)
+      dates.push(otherTimestamp.value.date, anchorTimestamp.value.date);
     }
   }
-  return dates
-})
+  return dates;
+});
 
 const anchorDayIdentifier = computed(() => {
   if (anchorTimestamp.value !== null) {
-    return getDayIdentifier(anchorTimestamp.value)
+    return getDayIdentifier(anchorTimestamp.value);
   }
-  return false
-})
+  return false;
+});
 
 const otherDayIdentifier = computed(() => {
   if (otherTimestamp.value !== null) {
-    return getDayIdentifier(otherTimestamp.value)
+    return getDayIdentifier(otherTimestamp.value);
   }
-  return false
-})
+  return false;
+});
 
 function onMouseDownDay({ scope, event }) {
   if (leftClick(event)) {
-    if (mobile.value === true
-      && anchorTimestamp.value !== null
-      && otherTimestamp.value !== null
-      && anchorTimestamp.value.date === otherTimestamp.value.date) {
-      otherTimestamp.value = scope.timestamp
-      mouseDown.value = false
-      return
+    if (
+      mobile.value === true &&
+      anchorTimestamp.value !== null &&
+      otherTimestamp.value !== null &&
+      anchorTimestamp.value.date === otherTimestamp.value.date
+    ) {
+      otherTimestamp.value = scope.timestamp;
+      mouseDown.value = false;
+      return;
     }
     // mouse is down, start selection and capture current
-    mouseDown.value = true
-    anchorTimestamp.value = scope.timestamp
-    otherTimestamp.value = scope.timestamp
+    mouseDown.value = true;
+    anchorTimestamp.value = scope.timestamp;
+    otherTimestamp.value = scope.timestamp;
   }
 }
 
 function onMouseUpDay({ scope, event }) {
   if (leftClick(event)) {
     // mouse is up, capture last and cancel selection
-    otherTimestamp.value = scope.timestamp
+    otherTimestamp.value = scope.timestamp;
     mouseDown.value = false;
   }
 }
 
 function onMouseMoveDay({ scope }) {
   if (mouseDown.value === true && scope.outside !== true) {
-    otherTimestamp.value = scope.timestamp
+    otherTimestamp.value = scope.timestamp;
   }
 }
 
-
 function onMoved(data) {
-  console.log('onMoved', data)
+  console.log('onMoved', data);
 }
 
 function onChange(data) {
-  console.log('onChange', data)
+  console.log('onChange', data);
 }
 
 function onClickDate(data) {
-  console.log('onClickDate', data)
+  console.log('onClickDate', data);
 }
 
 // function onClickDay (data) {
 //   console.log('onClickDay', data)
 // }
 function onClickWorkweek(data) {
-  console.log('onClickWorkweek', data)
+  console.log('onClickWorkweek', data);
 }
 
 function onClickHeadDay(data) {
-  console.log('onClickHeadDay', data)
+  console.log('onClickHeadDay', data);
 }
 
 function onClickHeadWorkweek(data) {
-  console.log('onClickHeadWorkweek', data)
+  console.log('onClickHeadWorkweek', data);
 }
 
-onMounted(()=> {
+onMounted(() => {
   const day = document.querySelectorAll('.q-calendar__button');
-  console.log(day)
-})
-
+  console.log(day);
+});
 </script>
 
 <style lang="scss">
-@import "/src/css/custom.scss";
-@import "/src/css/common.scss";
-
+@import '/src/css/custom.scss';
+@import '/src/css/common.scss';
 </style>
 
 <style lang="scss" scoped>
@@ -1164,7 +1372,7 @@ onMounted(()=> {
   }
 
   .chip1 {
-    background-image: url("../assets/dot.png");
+    background-image: url('../assets/dot.png');
     background-size: 50px;
     background-repeat: repeat;
     background-color: #e56b51;
@@ -1235,11 +1443,7 @@ onMounted(()=> {
     width: 30px;
 
     ::after {
-
     }
   }
 }
-
-
 </style>
-

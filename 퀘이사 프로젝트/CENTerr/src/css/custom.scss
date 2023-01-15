@@ -1,0 +1,191 @@
+@import "./quasar.variables";
+
+// 셀렉터, 인풋
+.q-field,
+.q-input {
+  //min-width: 250px;
+  width: 100%;
+  background: #fff;
+
+  &--auto-height {
+    .q-field__control,
+    .q-field__native {
+      min-height: 35px;
+      height: 35px;
+    }
+  }
+
+  &__marginal {
+    height: 35px;
+  }
+
+  &__control {
+    min-height: 35px;
+    height: 35px;
+  }
+}
+
+// 테이블
+.q-table {
+  border-top: 1px solid $primary;
+  border-bottom: 1px solid #ddd;
+
+  &--cell-separator,
+  &__container {
+    .q-table__top {
+      padding: 0;
+      margin-bottom: 10px;
+      border-bottom: 0;
+    }
+  }
+
+  &__card {
+    box-shadow: none;
+  }
+
+  thead {
+    font-weight: bold;
+    color: $primary;
+    background: rgba(0, 122, 255, 0.1);
+  }
+
+  &__sort-icon {
+    opacity: 1;
+  }
+}
+
+// 페이지네이션
+.q-pagination {
+  .row {
+    gap: 5px;
+  }
+}
+
+// 탭메뉴
+body.desktop {
+  .q-hoverable:hover,
+  .q-focusable:focus {
+    > .q-focus-helper {
+      opacity: 0;
+    }
+  }
+}
+
+.q-tabs {
+  margin-bottom: 20px;
+
+  &--type1 {
+    .q-tab {
+      &--active {
+        .q-tab__indicator {
+          height: 0;
+          opacity: 0;
+        }
+
+        .q-tab__content {
+          .q-tab__label {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: $primary;
+            background: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  &--type2 {
+    .q-tab {
+      padding: 0 5px;
+
+      &__content {
+        border: 1px solid grey;
+        border-radius: 8px;
+        padding: 10px;
+      }
+    }
+
+    &-active {
+      .q-tab__content {
+        border: 1px solid #1976d2;
+      }
+    }
+  }
+
+  &__arrow {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    font-size: 28px;
+    color: #999;
+    background: #fff;
+
+    &--right {
+      right: 5px !important;
+    }
+
+    &--left {
+      left: 5px !important;
+    }
+  }
+
+  &--horizontal {
+    .q-tabs__arrow {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      font-size: 28px;
+      color: #999;
+      background: #fff;
+
+      &--right {
+        right: 5px;
+      }
+
+      &--left {
+        left: 5px;
+      }
+    }
+  }
+}
+
+// 탭 패널
+.q-tab-panels {
+  .q-tab-panel {
+    padding: 0;
+  }
+}
+
+//에디터
+.q-editor {
+  &__toolbars-container {
+    display: none;
+  }
+}
+
+.q-uploader {
+  &__list.scroll {
+    display: contents;
+  }
+}
+
+// 레인지 피커
+.range-picker-calendar {
+  .q-calendar-month__day--label__wrapper {
+    justify-content: start;
+    padding: 5px;
+  }
+  .q-calendar__button {
+    font-size: 16px;
+  }
+  .q-calendar-month__head--weekday {
+    padding: 10px 0;
+  }
+}
