@@ -1,0 +1,85 @@
+.page {
+  //min-width: 1200px;
+  height: 100%;
+  padding: 20px;
+  background: #eee;
+
+  &__depth {
+    display: inline-block;
+    padding: 0 5px;
+  }
+}
+
+.title-area {
+  display: flex;
+
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__favorite-btn {
+    padding: 5px;
+    opacity: 0.5;
+    ::v-deep(.q-icon) {
+      font-size: 20px;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  border-radius: 5px;
+  background: #fff;
+
+  + .container {
+    margin-top: 10px;
+  }
+
+  &__row {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.input {
+  &__title {
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+}
+
+
+.form {
+  border-top: 1px solid $primary;
+  &__title {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+    background: rgba(0, 122, 255, 0.1);
+  }
+  &__content {
+    padding: 5px 10px;
+    border-top: 1px solid #ddd;
+  }
+  &__head {
+    padding: 8px 0;
+    border-top: 1px solid $primary;
+    border-right: 1px solid #ddd;
+    text-align: center;
+    color: $primary;
+    background: rgba(0, 122, 255, 0.1);
+  }
+  &__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    &.checkbox {
+      padding: 10px 0;
+    }
+  }
+}
