@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [state, setState] = useState(1);
+  const handleClick = () => {
+    let newState;
+    if (state >= 24) {
+      newState = 1;
+    } else {
+      newState = state + 1;
+    }
+    setState(newState);
+  };
+
+  console.log("업데이트!!");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <span>현재 시간 {state}시</span>
+      <button type="button" onClick={handleClick}>
+        Update
+      </button>
     </div>
   );
 }
