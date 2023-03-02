@@ -64,6 +64,8 @@ function App() {
       console.log(prevState);
       return [input, ...prevState];
     });
+    alert(`${inputRef.current.value}님이 추가 되었습니다.`);
+    inputRef.current.focus();
   };
 
   useEffect(() => {
@@ -71,6 +73,13 @@ function App() {
   }, [name]);
 
   const [showTimer, setShowTimer] = useState(false);
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    console.log(inputRef);
+    inputRef.current.focus();
+  }, []);
 
   return (
     <div>
@@ -93,7 +102,12 @@ function App() {
               </p>
             );
           })}
-          <input type="text" value={input} onChange={handleInputChange} />
+          <input
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            ref={inputRef}
+          />
           <button type="button" onClick={setNameFunc}>
             Update
           </button>
