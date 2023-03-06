@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../context/themeContext";
+import { userContext } from "../context/userContext";
 
-const Header = ({ isDark }) => {
+const Header = () => {
+  const { isDark } = useContext(ThemeContext);
+  const user = useContext(userContext);
+  console.log(user);
   return (
     <header
       className="header"
@@ -9,7 +14,7 @@ const Header = ({ isDark }) => {
         color: isDark ? "white" : "black",
       }}
     >
-      <h1>Welcome 배재관!</h1>
+      <h1>Welcome {user}!</h1>
     </header>
   );
 };

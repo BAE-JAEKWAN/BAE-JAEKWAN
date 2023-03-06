@@ -1,15 +1,17 @@
 import React from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../context/themeContext";
 
-const Footer = ({ isDark, setIsDark }) => {
+const Footer = () => {
+  const { isDark, setIsDark } = useContext(ThemeContext);
   const themeToggle = () => {
     setIsDark(!isDark);
-    console.log(setIsDark, isDark);
   };
   return (
     <footer
       className="footer"
       style={{
-        backgroundColor: isDark ? "black" : "white",
+        backgroundColor: isDark ? "black" : "lightgray",
         color: isDark ? "white" : "black",
       }}
     >
