@@ -6,13 +6,30 @@ import {
   useNavermaps,
   InfoWindow,
 } from "react-naver-maps";
+import "./App.css";
 
 function App() {
   const navermaps = useNavermaps();
   const [map, setMap] = useState(null); // 지도 초기 위치 상태
-  const [infowindow, setInfoWindow] = useState(null); // 정보창 상태
+  const [currentWindow, setCurrentWindow] = useState(null); // 정보창 상태
   const [localName, setLocalName] = useState(null); // 현재 위치 지역 이름
   const [localAddress, setLocalAddress] = useState(null); // 현재 위치 상세 주소
+
+  const [selectedMarker, setSelectedMarker] = useState(null); // 카페 상세 정보창
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker);
+  };
+  useEffect(() => {
+    console.log(selectedMarker);
+    if (selectedMarker && selectedMarker.code) {
+      const location = new navermaps.LatLng(...selectedMarker.code);
+      const infoWindow = new navermaps.InfoWindow({
+        content: `<div style="padding:5px">${selectedMarker.station}</div>`,
+      });
+      infoWindow.open(map, location);
+    }
+  }, [selectedMarker]);
+
   const cafeData = [
     { order: 11, station: "잠실새내", code: [37.511687, 127.086162] },
     { order: 23, station: "종합운동장", code: [37.510997, 127.073642] },
@@ -33,11 +50,11 @@ function App() {
     { order: 2345, station: "문래", code: [37.517933, 126.89476] },
   ];
 
-  const currentLocation = (curentLat, curentLng) => {
+  const currentLocation = (location) => {
     // 현재 위치 지역명 구하기
     navermaps.Service.reverseGeocode(
       {
-        location: new navermaps.LatLng(curentLat, curentLng),
+        location: location,
       },
       function (status, response) {
         if (status !== navermaps.Service.Status.OK) {
@@ -51,7 +68,7 @@ function App() {
   };
 
   function onSuccessGeolocation(position) {
-    // if (!map || !infowindow) return;
+    // if (!map || !currentWindow) return;
 
     const location = new navermaps.LatLng(
       position.coords.latitude,
@@ -60,18 +77,18 @@ function App() {
     currentLocation(location); // 현재 지역 좌표값을 currentLocation 함수에 인자로 전달
     map.setCenter(location);
     // map.setZoom(10);
-    infowindow.setContent(
+    currentWindow.setContent(
       `<div style="padding:10px;">현재 위치 : ${localAddress}</div>`
     );
-    infowindow.open(map, location);
+    currentWindow.open(map, location);
     console.log("Coordinates: " + location.toString());
   }
 
   function onErrorGeolocation() {
-    if (!map || !infowindow) return;
+    if (!map || !currentWindow) return;
 
     const center = map.getCenter();
-    infowindow.setContent(
+    currentWindow.setContent(
       '<div style="padding:20px;">' +
         '<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>' +
         "latitude: " +
@@ -80,24 +97,11 @@ function App() {
         center.lng() +
         "</div>"
     );
-    infowindow.open(map, center);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        onSuccessGeolocation,
-        onErrorGeolocation
-      );
-    } else {
-      const center = map.getCenter();
-      infowindow.setContent(
-        '<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>'
-      );
-      infowindow.open(map, center);
-    }
+    currentWindow.open(map, center);
   }
 
   useEffect(() => {
-    if (!map || !infowindow) {
+    if (!map || !currentWindow) {
       return;
     }
 
@@ -108,12 +112,12 @@ function App() {
       );
     } else {
       var center = map.getCenter();
-      infowindow.setContent(
+      currentWindow.setContent(
         '<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>'
       );
-      infowindow.open(map, center);
+      currentWindow.open(map, center);
     }
-  }, [map, infowindow, localName]);
+  }, [map, currentWindow, localName]);
 
   return (
     <div>
@@ -128,20 +132,21 @@ function App() {
           disableKineticPan={false} // 관성 드래그
           ref={setMap}
         >
-          {cafeData.map((input) => (
+          {cafeData.map((el) => (
             <Marker
-              key={input.station}
-              position={new navermaps.LatLng(...input.code)}
-              animation={2}
-              title={input.station}
+              key={el.order}
+              position={new navermaps.LatLng(...el.code)}
               icon={{
-                content: `<button class="markerBox">
-                <div class="totalOrder">${input.order}</div>
-                ${input.station}</button>`,
+                content: `<button class="markerBox"></button>`,
+              }}
+              onClick={() => {
+                handleMarkerClick(el);
               }}
             />
           ))}
-          <InfoWindow ref={setInfoWindow} />
+          {selectedMarker && <InfoWindow ref={setSelectedMarker} />}
+
+          <InfoWindow ref={setCurrentWindow} />
         </NaverMap>
       </MapDiv>
     </div>
