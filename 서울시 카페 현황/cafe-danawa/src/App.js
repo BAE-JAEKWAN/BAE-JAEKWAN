@@ -12,34 +12,68 @@ import axios from "axios";
 function App() {
   const navermaps = useNavermaps(); //naver.maps 객체 생성
   const [map, setMap] = useState(null); // 지도 초기 위치 상태
+  const [localLat, setLocalLat] = useState(37.5666791); // 현재 위치 x좌표 초기값
+  const [localLng, setLocalLng] = useState(126.9782914); // 현재 위치 y좌표 초기값
 
+  // 카카오 로컬 API로부터 현재 위치 주변의 카페 정보를 받아와서 cafeData에 저장하는 함수
   const [cafeData, setCafeData] = useState([]); // 주변 카페 정보
   const params = {
     category_group_code: "CE7", //카페 카테고리 코드
     radius: 200, // 반경 설정
-    x: 127.05327728385645,
-    y: 37.54480274987832,
+    x: localLng,
+    y: localLat,
+    page: 1,
   };
   const headers = {
     Authorization: "KakaoAK 36bc1dfae15cdd50ef0fca451fbecbbd",
   };
+  const getData = () => {
+    let allData = [];
+    const fetchData = async (pageNum) => {
+      try {
+        const response = await axios.get(
+          "https://dapi.kakao.com/v2/local/search/category.json",
+          {
+            params: { ...params, page: pageNum },
+            headers: headers,
+          }
+        );
+        allData = [...allData, ...response.data.documents];
+        console.log(allData);
 
-  const [totalCount, setTotalcount] = useState(1); // API에서 불러온 총 데이터 갯수
-  useEffect(() => {
+        return {
+          isEnd: response.data.meta.is_end, // true면 while문 탈출
+          data: allData,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     axios
       .get("https://dapi.kakao.com/v2/local/search/category.json", {
         params,
         headers,
       })
-      .then((response) => {
-        console.log("total_count", response.data.meta.total_count);
-        console.log("is_end", response.data.meta.is_end);
-        setCafeData(response.data.documents);
+      .then(() => {
+        let isEnd = false;
+        let pageNum = 1;
+        (async () => {
+          while (!isEnd) {
+            const { isEnd: loopEnd, data } = await fetchData(pageNum);
+            isEnd = loopEnd;
+            pageNum++;
+            if (isEnd) {
+              setCafeData((prevState) => [...prevState, ...data]);
+            }
+          }
+        })();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
-  }, []);
+    console.log(localAddress, cafeData);
+  };
 
   // 마커 클릭 시 카페 상세 정보창 노출
   const [selectedMarker, setSelectedMarker] = useState(null);
@@ -63,8 +97,6 @@ function App() {
   }, [selectedMarker]);
 
   const [currentWindow, setCurrentWindow] = useState(null); // 현재 위치 정보창
-  const [localLat, setLocalLat] = useState(37.5666791); // 현재 위치 x좌표 초기값
-  const [localLng, setLocalLng] = useState(126.9782914); // 현재 위치 y좌표 초기값
   const [localName, setLocalName] = useState(null); // 현재 위치 지역 이름
   const [localAddress, setLocalAddress] = useState(null); // 현재 위치 상세 주소
   function onSuccessGeolocation(position) {
@@ -122,10 +154,10 @@ function App() {
     }
 
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        onSuccessGeolocation,
-        onErrorGeolocation
-      );
+      navigator.geolocation.getCurrentPosition((position) => {
+        onSuccessGeolocation(position);
+        getData();
+      }, onErrorGeolocation);
     } else {
       var center = map.getCenter();
       currentWindow.setContent(
@@ -143,7 +175,7 @@ function App() {
 
       <MapDiv style={{ width: "100%", height: "calc(100vh - 86px)" }}>
         <NaverMap
-          defaultCenter={{ lat: 37.5666102, lng: 126.9783881 }} // 초기 중심 좌표
+          defaultCenter={{ lat: localLat, lng: localLng }} // 초기 중심 좌표
           defaultZoom={1} // 초기 줌 레벨
           disableKineticPan={false} // 관성 드래그
           ref={setMap}
