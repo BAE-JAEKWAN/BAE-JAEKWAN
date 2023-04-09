@@ -79,7 +79,7 @@ function App() {
   useEffect(() => {
     console.log(inputRef);
     inputRef.current.focus();
-  }, []);
+  }, []); // 마운트 후 최초 1회만 실행하고 싶을 땐 두번째 인자로 빈 배열 전달.
 
   return (
     <div>
