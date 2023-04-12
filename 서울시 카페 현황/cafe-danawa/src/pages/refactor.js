@@ -6,6 +6,7 @@ import {
   useNavermaps,
   InfoWindow,
 } from "react-naver-maps";
+import axios from "axios";
 import "../App.css";
 
 function Refactor() {
@@ -13,10 +14,10 @@ function Refactor() {
   const [map, setMap] = useState(null); // 지도 초기 위치 상태
   const [localLat, setLocalLat] = useState(null); // 현재 위치 x좌표 초기값
   const [localLng, setLocalLng] = useState(null); // 현재 위치 y좌표 초기값
-  const [currentLocalName, setLocalName] = useState(null); // 현재 위치 지역 이름
   const [currentLocalAddress, setLocalAddress] = useState(null); // 현재 위치 상세 주소
   const [currentInfoWindow, setCurrentInfoWindow] = useState(null); // 현재 위치 정보창
 
+  // 현재 위치 좌표 구하기
   const funcCurrentLocation = () => {
     console.log("현재 위치 좌표 구하기 실행");
     navigator.geolocation.getCurrentPosition(
@@ -33,23 +34,23 @@ function Refactor() {
     );
   };
 
-  // 현재 위치 지역명 구하기
-  const funcCurrentAddress = (lat, lng) => {
-    console.log("현재 위치 주소 구하기 실행", lat, lng);
+  // 현재 위치 주소 구하기
+  const funcCurrentAddress = () => {
+    console.log("현재 위치 주소 구하기 실행", localLat, localLng);
     navermaps.Service.reverseGeocode(
       {
-        location: new navermaps.LatLng(lat, lng),
+        location: new navermaps.LatLng(localLat, localLng),
       },
       function (status, response) {
         if (status !== navermaps.Service.Status.OK) {
           return alert("reverseGeocode 실행 오류!");
         }
-        setLocalName(response.result.items[0].addrdetail.sigugun);
         setLocalAddress(response.result.items[0].address);
       }
     );
   };
 
+  // 현재 위치 주소를 infoWindow로 출력
   const funcCurrentInfoWindow = () => {
     console.log("현재 위치 주소 :", currentLocalAddress);
     if (currentInfoWindow) {
@@ -61,16 +62,109 @@ function Refactor() {
     }
   };
 
+  // 카카오 로컬 API로부터 현재 위치 주변 200미터 이내의 카페 정보 받아오기
+  const [cafeData, setCafeData] = useState([]); // 주변 카페 정보
+  const params = {
+    category_group_code: "CE7", //카페 카테고리 코드
+    radius: 200, // 반경 설정
+    x: localLng,
+    y: localLat,
+    page: 1,
+  };
+  const headers = {
+    Authorization: "KakaoAK 36bc1dfae15cdd50ef0fca451fbecbbd",
+  };
+  const getData = () => {
+    let allData = [];
+    const fetchData = async (pageNum) => {
+      try {
+        const response = await axios.get(
+          "https://dapi.kakao.com/v2/local/search/category.json",
+          {
+            params: { ...params, page: pageNum },
+            headers: headers,
+          }
+        );
+        allData = [...allData, ...response.data.documents];
+        console.log(response);
+        // console.log(allData);
+        if (response.data.meta.is_end) {
+          console.log("is_end :", response.data.meta.is_end);
+        }
+
+        return {
+          isEnd: response.data.meta.is_end, // true면 while문 탈출
+          data: allData,
+        };
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    axios
+      .get("https://dapi.kakao.com/v2/local/search/category.json", {
+        params,
+        headers,
+      })
+      .then(() => {
+        let isEnd = false;
+        let pageNum = 1;
+        (async () => {
+          while (!isEnd) {
+            const { isEnd: loopEnd, data } = await fetchData(pageNum);
+            isEnd = loopEnd;
+            pageNum++;
+            if (isEnd) {
+              setCafeData((prevState) => [...prevState, ...data]);
+            }
+          }
+        })();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const funcSelectMarker = () => {
+    // 상세정보 실행
+    if (selectedMarker) {
+      const location = new navermaps.LatLng(
+        parseFloat(selectedMarker.y),
+        parseFloat(selectedMarker.x)
+      );
+      const infoWindow = new navermaps.InfoWindow({
+        content: `
+        <div class="cafeInfoWindow">
+          <p>${selectedMarker.place_name}</p>
+          <p>${selectedMarker.address_name}</p>
+          <p>${selectedMarker.phone}</p>
+        </div>
+        `,
+      });
+      infoWindow.open(map, location);
+    }
+  };
+
   useEffect(() => {
     funcCurrentLocation();
     if (localLat && localLng) {
-      funcCurrentAddress(localLat, localLng);
+      funcCurrentAddress();
+      getData();
     }
   }, [localLat, localLng]);
 
   useEffect(() => {
     funcCurrentInfoWindow();
   }, [currentLocalAddress]);
+
+  useEffect(() => {
+    console.log("내 위치 주변의 카페 정보 :", cafeData);
+  }, [cafeData]);
+
+  useEffect(() => {
+    funcSelectMarker();
+  }, [selectedMarker]);
 
   return (
     <div>
@@ -82,7 +176,7 @@ function Refactor() {
         {localLat && localLng && (
           <NaverMap
             defaultCenter={new navermaps.LatLng(localLat, localLng)}
-            defaultZoom={15}
+            defaultZoom={17}
             ref={setMap}
           >
             <Marker
@@ -97,6 +191,20 @@ function Refactor() {
               ref={setCurrentInfoWindow}
               anchor={new window.naver.maps.Point(0, 0)}
             />
+            {cafeData.map((el, index) => (
+              <Marker
+                key={index}
+                position={
+                  new navermaps.LatLng(parseFloat(el.y), parseFloat(el.x))
+                }
+                icon={{
+                  content: `<button class="markerBox" title="${el.place_name}"></button>`,
+                }}
+                onClick={() => {
+                  setSelectedMarker(el);
+                }}
+              />
+            ))}
           </NaverMap>
         )}
       </MapDiv>
