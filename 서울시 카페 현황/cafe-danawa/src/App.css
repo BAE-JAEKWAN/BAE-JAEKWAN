@@ -44,6 +44,12 @@
   height: 30px;
   border: 0;
 }
+.currentMarker {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+}
 
 .cafeInfoWindow {
   padding: 0 15px;
