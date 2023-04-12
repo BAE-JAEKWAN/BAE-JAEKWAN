@@ -199,6 +199,8 @@ function Refactor() {
                 }
                 icon={{
                   content: `<button class="markerBox" title="${el.place_name}"></button>`,
+                  origin: new window.naver.maps.Point(0, 0), // 이미지 원점 설정
+                  anchor: new window.naver.maps.Point(15, 15), // 이미지 중심점 설정
                 }}
                 onClick={() => {
                   setSelectedMarker(el);
