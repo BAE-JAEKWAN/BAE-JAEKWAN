@@ -66,7 +66,7 @@ function Refactor() {
   const [cafeData, setCafeData] = useState([]); // 주변 카페 정보
   const params = {
     category_group_code: "CE7", //카페 카테고리 코드
-    radius: 200, // 반경 설정
+    radius: 400, // 반경 설정
     x: localLng,
     y: localLat,
     page: 1,
@@ -85,13 +85,11 @@ function Refactor() {
             headers: headers,
           }
         );
-        allData = [...allData, ...response.data.documents];
-        console.log(response);
-        // console.log(allData);
-        if (response.data.meta.is_end) {
-          console.log("is_end :", response.data.meta.is_end);
-        }
-
+        // 중복되는 데이터는 삭제하고 새로운 데이터만 allData에 추가
+        const newData = response.data.documents.filter(
+          (newDoc) => !allData.some((prevDoc) => prevDoc.id === newDoc.id)
+        );
+        allData = [...allData, ...newData];
         return {
           isEnd: response.data.meta.is_end, // true면 while문 탈출
           data: allData,
@@ -100,7 +98,6 @@ function Refactor() {
         console.error(error);
       }
     };
-
     axios
       .get("https://dapi.kakao.com/v2/local/search/category.json", {
         params,
@@ -115,7 +112,7 @@ function Refactor() {
             isEnd = loopEnd;
             pageNum++;
             if (isEnd) {
-              setCafeData((prevState) => [...prevState, ...data]);
+              setCafeData(() => [...data]);
             }
           }
         })();
@@ -126,25 +123,6 @@ function Refactor() {
   };
 
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const funcSelectMarker = () => {
-    // 상세정보 실행
-    if (selectedMarker) {
-      const location = new navermaps.LatLng(
-        parseFloat(selectedMarker.y),
-        parseFloat(selectedMarker.x)
-      );
-      const infoWindow = new navermaps.InfoWindow({
-        content: `
-        <div class="cafeInfoWindow">
-          <p>${selectedMarker.place_name}</p>
-          <p>${selectedMarker.address_name}</p>
-          <p>${selectedMarker.phone}</p>
-        </div>
-        `,
-      });
-      infoWindow.open(map, location);
-    }
-  };
 
   useEffect(() => {
     funcCurrentLocation();
@@ -163,7 +141,23 @@ function Refactor() {
   }, [cafeData]);
 
   useEffect(() => {
-    funcSelectMarker();
+    // 상세정보 실행
+    if (selectedMarker) {
+      const location = new navermaps.LatLng(
+        parseFloat(selectedMarker.y),
+        parseFloat(selectedMarker.x)
+      );
+      const infoWindow = new navermaps.InfoWindow({
+        content: `
+            <div class="cafeInfoWindow">
+              <p>${selectedMarker.place_name}</p>
+              <p>${selectedMarker.address_name}</p>
+              <p>${selectedMarker.phone}</p>
+            </div>
+            `,
+      });
+      infoWindow.open(map, location);
+    }
   }, [selectedMarker]);
 
   return (
@@ -186,6 +180,7 @@ function Refactor() {
                 origin: new window.naver.maps.Point(0, 0), // 이미지 원점 설정
                 anchor: new window.naver.maps.Point(7.5, 7.5), // 이미지 중심점 설정
               }}
+              clickable={false}
             />
             <InfoWindow
               ref={setCurrentInfoWindow}
