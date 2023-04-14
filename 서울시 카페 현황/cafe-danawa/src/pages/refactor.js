@@ -25,7 +25,7 @@ function Refactor() {
         // 위치 정보 가져오기 성공
         setLocalLat(position.coords.latitude);
         setLocalLng(position.coords.longitude);
-        console.log("현재 위치 좌표", localLat, localLng);
+        console.log("현재 위치 좌표 :", localLat, localLng);
       },
       (error) => {
         // 위치 정보 가져오기 실패
