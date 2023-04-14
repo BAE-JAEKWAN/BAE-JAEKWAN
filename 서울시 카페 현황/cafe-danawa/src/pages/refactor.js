@@ -36,7 +36,7 @@ function Refactor() {
 
   // 현재 위치 주소 구하기
   const funcCurrentAddress = () => {
-    console.log("현재 위치 주소 구하기 실행", localLat, localLng);
+    console.log("현재 위치 주소 구하기 실행");
     navermaps.Service.reverseGeocode(
       {
         location: new navermaps.LatLng(localLat, localLng),
@@ -137,7 +137,7 @@ function Refactor() {
   }, [currentLocalAddress]);
 
   useEffect(() => {
-    console.log("내 위치 주변의 카페 정보 :", cafeData);
+    console.log(`내 위치 주변 ${params.radius}m 내의 카페 정보 :`, cafeData);
   }, [cafeData]);
 
   useEffect(() => {
