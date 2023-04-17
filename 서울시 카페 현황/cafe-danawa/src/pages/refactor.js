@@ -62,7 +62,7 @@ function Refactor() {
     }
   };
 
-  // 카카오 로컬 API로부터 현재 위치 주변 200미터 이내의 카페 정보 받아오기
+  // 카카오 로컬 API로부터 현재 위치 주변 400미터 이내의 카페 정보 받아오기
   const [cafeData, setCafeData] = useState([]); // 주변 카페 정보
   const params = {
     category_group_code: "CE7", //카페 카테고리 코드
