@@ -47,7 +47,7 @@
     </div>
     <div class="header__row2">
       <h1 class="header__title">
-        <a href="#">CENTerr</a>
+        <a href="#">CENT</a>
       </h1>
       <nav class="nav">
         <ul class="flex">
