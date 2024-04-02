@@ -1,5 +1,6 @@
 import './App.css'
 import { useInput } from './hooks/useInput'
+import { useFetch } from './hooks/useFetch'
 
 function App() {
   const displayMessage = (message: string) => {
@@ -12,9 +13,14 @@ function App() {
   )
   const { InputValue: InputValue2, handleChange: handleChange2 } = useInput('')
 
+  const baseUrl = 'https://jsonplaceholder.typicode.com/'
+
+  const { ApiData, ApiType, setApiType, fetchData, fetchEnter } =
+    useFetch(baseUrl)
+
   return (
     <>
-      <h1>useInput</h1>
+      <h2>useInput</h2>
       <div>
         <input
           type="text"
@@ -33,6 +39,7 @@ function App() {
           확인
         </button>
       </div>
+
       <div>
         <input
           type="text"
@@ -51,6 +58,27 @@ function App() {
           확인
         </button>
       </div>
+
+      <h2>useFetch</h2>
+      <input
+        type="text"
+        value={ApiType}
+        onChange={e => {
+          setApiType(e.target.value)
+        }}
+        onKeyDown={e => {
+          fetchEnter(e, ApiType)
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          fetchData(ApiType)
+        }}
+      >
+        확인
+      </button>
+      <pre>{JSON.stringify(ApiData, null, 2)}</pre>
     </>
   )
 }
