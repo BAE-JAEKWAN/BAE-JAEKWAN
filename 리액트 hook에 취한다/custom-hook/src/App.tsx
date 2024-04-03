@@ -20,6 +20,13 @@ function App() {
 
   return (
     <>
+      <p>
+        API 정보 :
+        <a href="https://jsonplaceholder.typicode.com/guide/" target="_blank">
+          {' '}
+          jsonplaceholder
+        </a>
+      </p>
       <h2>useInput</h2>
       <div>
         <input
